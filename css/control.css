@@ -1,0 +1,29 @@
+.control {
+  background-color: #fee;
+  top: 50%;
+  bottom: 50%;
+  height: 60px;
+  border: 1px solid #fdd;
+  padding: 15px;
+  position: absolute;
+  z-index: 9999;
+}
+
+#control-left {
+  float: left;
+  display: block;
+}
+
+#control-right {
+  float: right;
+}
+
+.control-block {
+  padding: 1px;
+  align-times: center;
+}
+
+.control-key {
+  height: 28px;
+  padding: 0 2px;
+}

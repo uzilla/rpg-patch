@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="viewport" content="user-scalable=no">
+        <link rel="icon" href="icon/icon.png" type="image/png">
+        <link rel="apple-touch-icon" href="icon/icon.png">
+        <link rel="stylesheet" type="text/css" href="css/control.css">
+        <link rel="stylesheet" type="text/css" href="fonts/gamefont.css">
+        <title>RPG MV Browser Compatible for Mobile</title>
+    </head>
+    <body style="background-color: black">
+        <script type="text/javascript" src="js/libs/jquery.js"></script>
+        <script type="text/javascript" src="js/libs/vconsole.js"></script>
+        <script>var $vConsolse = new VConsole();</script>
+        <script type="text/javascript" src="js/libs/pixi.js"></script>
+        <script type="text/javascript" src="js/libs/pixi-tilemap.js"></script>
+        <script type="text/javascript" src="js/libs/pixi-picture.js"></script>
+        <script type="text/javascript" src="js/libs/fpsmeter.js"></script>
+        <script type="text/javascript" src="js/libs/lz-string.js"></script>
+        <script type="text/javascript" src="js/libs/iphone-inline-video.browser.js"></script>
+        <script type="text/javascript" src="js/rpg_core.js"></script>
+        <script type="text/javascript" src="js/rpg_managers.js"></script>
+        <script type="text/javascript" src="js/rpg_objects.js"></script>
+        <script type="text/javascript" src="js/rpg_scenes.js"></script>
+        <script type="text/javascript" src="js/rpg_sprites.js"></script>
+        <script type="text/javascript" src="js/rpg_windows.js"></script>
+        <script type="text/javascript" src="js/plugins.js"></script>
+        <script type="text/javascript" src="js/rpg_hook.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
+        <div id="control-left" class="control">
+            <div class="control-block">
+            <button id="ctrl-key-up" class="control-key" onclick="Input.fireKey('up')">↑</button>
+            </div>
+            <div class="control-block">
+            <button id="ctrl-key-left" class="control-key" onclick="Input.fireKey('left')">←</button>
+            <button id="ctrl-key-down" class="control-key" onclick="Input.fireKey('down')">↓</button>
+            <button id="ctrl-key-right" class="control-key" onclick="Input.fireKey('right')">→</button>
+            </div>       
+        </div>
+        <div id="control-right" class="contort">
+            <button id="ctrl-key-escape" class="control-key" onclick="Input.fireKey('escape')">ESC</button>
+            <button id="ctrl-key-ok" class="control-key" onclick="Input.fireKey('ok')">OK</button>
+        </div>
+    </body>
+</html>
