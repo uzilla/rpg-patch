@@ -12,7 +12,6 @@
         <title>RPG MV Browser Compatible for Mobile</title>
     </head>
     <body style="background-color: black">
-        <script type="text/javascript" src="js/libs/jquery.js"></script>
         <script type="text/javascript" src="js/libs/vconsole.js"></script>
         <script>var $vConsolse = new VConsole();</script>
         <script type="text/javascript" src="js/libs/pixi.js"></script>
@@ -28,21 +27,15 @@
         <script type="text/javascript" src="js/rpg_sprites.js"></script>
         <script type="text/javascript" src="js/rpg_windows.js"></script>
         <script type="text/javascript" src="js/plugins.js"></script>
-        <script type="text/javascript" src="js/rpg_hook.js"></script>
+        <script type="text/javascript" src="js/rpg_hooks.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
         <div id="control-left" class="control">
-            <div class="control-block">
-            <button id="ctrl-key-up" class="control-key" onclick="Input.fireKey('up')">↑</button>
-            </div>
-            <div class="control-block">
-            <button id="ctrl-key-left" class="control-key" onclick="Input.fireKey('left')">←</button>
-            <button id="ctrl-key-down" class="control-key" onclick="Input.fireKey('down')">↓</button>
-            <button id="ctrl-key-right" class="control-key" onclick="Input.fireKey('right')">→</button>
-            </div>       
+            <button id="ctrl-key-esc" class="control-key" onclick="Input.fireKey('escape')" ontouchstart="touchToClickEvent(event)">ESC</button>
+            <button id="ctrl-key-ok" class="control-key" onclick="Input.fireKey('ok')" ontouchstart="touchToClickEvent(event)">OK</button>
         </div>
-        <div id="control-right" class="contort">
-            <button id="ctrl-key-escape" class="control-key" onclick="Input.fireKey('escape')">ESC</button>
-            <button id="ctrl-key-ok" class="control-key" onclick="Input.fireKey('ok')">OK</button>
+        <div id="control-right" class="control">
+            <button id="ctrl-key-f2" class="control-key" onclick="Input.fireKey('f2')" ontouchstart="touchToClickEvent(event)">F2</button>
+            <button id="ctrl-key-f4" class="control-key" onclick="Input.fireKey('f4')" ontouchstart="touchToClickEvent(event)">F4</button>
         </div>
     </body>
 </html>

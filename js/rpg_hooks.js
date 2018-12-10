@@ -10,7 +10,10 @@ AudioManager.audioFileExt = function() {
 };
 
 Input.nameMapper = (function() {
-    var nameMapper = {};
+    var nameMapper = {
+        "f2": 113, // Show FPSMeter
+        "f4": 115, // Switch FullScreen
+    };
     for (var code in Input.keyMapper) {
         nameMapper[Input.keyMapper[code]] = Number(code);
     }
@@ -33,16 +36,22 @@ Input._fireKeyUp = function(keyname) {
 
 Input.fireKey = function(keyname) {
     this._fireKeyDown(keyname);
-    // Ensure that we run fireKeyUp at end.
+    // Ensure that we run at end.
     setTimeout((function() {
         this._fireKeyUp(keyname);
     }).bind(this), 0);
 }
 
-document.addEventListener('keydown', (event) => {
-    console.log("KeyDown: " + event.key);
+function touchToClickEvent(event) {
+    event.preventDefault();
+    event.srcElement.click();
+}
+
+document.addEventListener('keydown', function(event) {
+    console.log("Key Down: " + event.key);
 });
 
-document.addEventListener('keyup', (event) => {
-    console.log("KeyUp: " + event.key);
+document.addEventListener('keyup', function(event) {
+    console.log("Key Up: " + event.key);
 });
+
