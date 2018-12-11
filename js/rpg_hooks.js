@@ -1,12 +1,33 @@
 // Author: urain39
 // FIXED: Mobile Devices Such As Android Cannot Run At Browser
 
-AudioManager.audioFileExt = function() {
-    if (WebAudio.canPlayOgg()) {
-        return '.ogg';
-    } else {
-        alert('Cannot run on your browser!');
+(function() {
+    if (!WebAudio.canPlayOgg()) {
+        SceneManager.stop();
+        AudioManager.stopAll();
+        // NOTE: Canvas doesn't initiated now.
+        alert("Doesn't support on your browser!");
     }
+
+    var _onload = window["onload"];
+    var _bindKeyEvents = function() {
+        $(".control-key").on("touchstart", function(event) {
+            // `return false;` is same as `event.stopPropagation()`.
+            event.srcElement.click(); return false;
+        });
+    }
+
+    window.onload = function() {
+        _bindKeyEvents();
+        if (typeof(_onload) === "function") {
+            _onload();
+        }
+        GameController.init();
+    }
+})();
+
+AudioManager.audioFileExt = function() {
+    return '.ogg'; // Checking on one time only.
 };
 
 Input.nameMapper = (function() {

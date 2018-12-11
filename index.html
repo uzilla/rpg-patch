@@ -12,9 +12,6 @@
         <title>RPG MV Browser Compatible for Mobile</title>
     </head>
     <body style="background-color: black">
-        <script type="text/javascript" src="js/libs/jquery.js"></script>
-        <script type="text/javascript" src="js/libs/vconsole.js"></script>
-        <script>var $vConsolse = new VConsole();</script>
         <script type="text/javascript" src="js/libs/pixi.js"></script>
         <script type="text/javascript" src="js/libs/pixi-tilemap.js"></script>
         <script type="text/javascript" src="js/libs/pixi-picture.js"></script>
@@ -30,6 +27,10 @@
         <script type="text/javascript" src="js/plugins.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
         <!--RPGMV Patch Begin!-->
+        <script type="text/javascript" src="js/libs/jquery.js"></script>
+        <script type="text/javascript" src="js/libs/vconsole.js"></script>
+        <script>var $vConsolse = new VConsole();</script>
+        <script type="text/javascript" src="js/libs/gamecontroller.js"></script>
         <script type="text/javascript" src="js/rpg_hooks.js"></script>
         <div id="control-left" class="control-btngrp">
             <button id="ctrl-key-esc" class="control-key" onclick="Input.fireKey('escape')">ESC</button>
@@ -39,12 +40,6 @@
             <button id="ctrl-key-f2" class="control-key" onclick="Input.fireKey('f2')">F2</button>
             <button id="ctrl-key-f4" class="control-key" onclick="Input.fireKey('f4')">F4</button>
         </div>
-        <script id="touch-to-click">
-            $(".control-key").on("touchstart", function(event) {
-                // `return false;` is same as `event.stopPropagation()`.
-                event.srcElement.click(); return false;
-            });
-        </script>
         <!--RPGMV Patch End!-->
     </body>
 </html>
