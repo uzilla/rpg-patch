@@ -12,6 +12,7 @@
         <title>RPG MV Browser Compatible for Mobile</title>
     </head>
     <body style="background-color: black">
+        <script type="text/javascript" src="js/libs/jquery.js"></script>
         <script type="text/javascript" src="js/libs/vconsole.js"></script>
         <script>var $vConsolse = new VConsole();</script>
         <script type="text/javascript" src="js/libs/pixi.js"></script>
@@ -27,15 +28,23 @@
         <script type="text/javascript" src="js/rpg_sprites.js"></script>
         <script type="text/javascript" src="js/rpg_windows.js"></script>
         <script type="text/javascript" src="js/plugins.js"></script>
-        <script type="text/javascript" src="js/rpg_hooks.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
-        <div id="control-left" class="control">
-            <button id="ctrl-key-esc" class="control-key" onclick="Input.fireKey('escape')" ontouchstart="touchToClickEvent(event)">ESC</button>
-            <button id="ctrl-key-ok" class="control-key" onclick="Input.fireKey('ok')" ontouchstart="touchToClickEvent(event)">OK</button>
+        <!--RPGMV Patch Begin!-->
+        <script type="text/javascript" src="js/rpg_hooks.js"></script>
+        <div id="control-left" class="control-btngrp">
+            <button id="ctrl-key-esc" class="control-key" onclick="Input.fireKey('escape')">ESC</button>
+            <button id="ctrl-key-ok" class="control-key" onclick="Input.fireKey('ok')">OK</button>
         </div>
-        <div id="control-right" class="control">
-            <button id="ctrl-key-f2" class="control-key" onclick="Input.fireKey('f2')" ontouchstart="touchToClickEvent(event)">F2</button>
-            <button id="ctrl-key-f4" class="control-key" onclick="Input.fireKey('f4')" ontouchstart="touchToClickEvent(event)">F4</button>
+        <div id="control-right" class="control-btngrp">
+            <button id="ctrl-key-f2" class="control-key" onclick="Input.fireKey('f2')">F2</button>
+            <button id="ctrl-key-f4" class="control-key" onclick="Input.fireKey('f4')">F4</button>
         </div>
+        <script id="touch-to-click">
+            $(".control-key").on("touchstart", function(event) {
+                // `return false;` is same as `event.stopPropagation()`.
+                event.srcElement.click(); return false;
+            });
+        </script>
+        <!--RPGMV Patch End!-->
     </body>
 </html>

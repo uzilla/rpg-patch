@@ -42,11 +42,6 @@ Input.fireKey = function(keyname) {
     }).bind(this), 0);
 }
 
-function touchToClickEvent(event) {
-    event.preventDefault();
-    event.srcElement.click();
-}
-
 document.addEventListener('keydown', function(event) {
     console.log("Key Down: " + event.key);
 });
@@ -54,4 +49,3 @@ document.addEventListener('keydown', function(event) {
 document.addEventListener('keyup', function(event) {
     console.log("Key Up: " + event.key);
 });
-
