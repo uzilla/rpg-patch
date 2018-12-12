@@ -1,4 +1,4 @@
-// Author: urain39
+﻿// Author: urain39
 // FIXED: Mobile Devices Such As Android Cannot Run At Browser
 
 (function() {
@@ -12,22 +12,31 @@
     var _onload = window["onload"];
     var _bindKeyEvents = function() {
         $(".control-key").on("touchstart", function(event) {
-            // `return false;` is same as `event.stopPropagation()`.
-            event.srcElement.click(); return false;
+            // Fix on Chrome, ensure that everything has been processed.
+            setTimeout(function() {
+                event.srcElement.click();
+            }, 0);
+            // NOTE: Do not use the `return false;` here, it will call the
+            // `event.preventDefault()` and `event.stopPropagation();` on JQuery
+            // then we cannot sent the FN key events. As what i said, don't use the
+            // `event.preventDefault()` here too.
+            event.stopPropagation();
         });
     }
 
     window.onload = function() {
-        _bindKeyEvents();
+        //_bindKeyEvents();
+        _bindKeyEvents.apply(this);
         if (typeof(_onload) === "function") {
-            _onload();
+            //_onload();
+            _onload.apply(this);
         }
         GameController.init();
     }
 })();
 
 AudioManager.audioFileExt = function() {
-    return '.ogg'; // Checking on one time only.
+    return '.ogg'; // Just checking one time.
 };
 
 Input.nameMapper = (function() {
@@ -57,7 +66,7 @@ Input._fireKeyUp = function(keyname) {
 
 Input.fireKey = function(keyname) {
     this._fireKeyDown(keyname);
-    // Ensure that we run at end.
+    // Ensure that keydown has been processed.
     setTimeout((function() {
         this._fireKeyUp(keyname);
     }).bind(this), 0);
