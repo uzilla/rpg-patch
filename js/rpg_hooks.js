@@ -31,7 +31,6 @@
             //_onload();
             _onload.apply(this);
         }
-        GameController.init();
     }
 })();
 
