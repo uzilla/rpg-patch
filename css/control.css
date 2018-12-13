@@ -16,14 +16,14 @@
 }
 
 .control-key {
-  height: 35px;
-  width: 50px;
+  height: 40px;
+  width: 56px;
   font-size: 18px;
   text-align: center;
   margin: 0 8px;
-  color: rgba(255, 255, 255, 0.35);
-  background-color: rgba(0, 0, 0, 0.35);
-  border: 2px solid rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.25);
+  background-color: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .control-btngrp .control-key:first-child {

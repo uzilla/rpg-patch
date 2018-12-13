@@ -12,15 +12,7 @@
     var _onload = window["onload"];
     var _bindKeyEvents = function() {
         $(".control-key").on("touchstart", function(event) {
-            // Fix on Chrome, ensure that everything has been processed.
-            setTimeout(function() {
-                event.srcElement.click();
-            }, 0);
-            // NOTE: Do not use the `return false;` here, it will call the
-            // `event.preventDefault()` and `event.stopPropagation();` on JQuery
-            // then we cannot sent the FN key events. As what i said, don't use the
-            // `event.preventDefault()` here too.
-            event.stopPropagation();
+            event.srcElement.click(); return false;
         });
     }
 
@@ -35,7 +27,7 @@
 })();
 
 AudioManager.audioFileExt = function() {
-    return '.ogg'; // Just checking one time.
+    return '.ogg'; // Only checking once.
 };
 
 Input.nameMapper = (function() {
