@@ -80,12 +80,12 @@ Hooks.quickSave = function() {
     if (!$gameParty.inBattle()) {
         SceneManager.push(Scene_Save);
     }
-    return true;
+    return false;
 }
 
 Hooks.quickLoad = function() {
     if (!$gameParty.inBattle()) {
         SceneManager.push(Scene_Load);
     }
-    return true;
+    return false;
 }
