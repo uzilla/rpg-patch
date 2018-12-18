@@ -1,8 +1,15 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
 .control-btngrp {
-  margin: 25px;
-  overflow: hidden;
+  width: 168px;
+  padding: 20px;
   position: absolute;
+  display: inline-block;
   z-index: 9999;
+  overflow: hidden;
 }
 
 #control-left {
@@ -11,25 +18,22 @@
 }
 
 #control-right {
+  bottom: 0;
+  right: 0;
+}
+
+#control-right-top {
   top: 0;
   right: 0;
 }
 
 .control-key {
   height: 40px;
-  width: 56px;
+  min-width: 56px;
   font-size: 18px;
   text-align: center;
-  margin: 0 8px;
+  margin: 4px 8px;
   color: rgba(255, 255, 255, 0.25);
   background-color: rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.control-btngrp .control-key:first-child {
-    margin-left: 0;
-}
-
-.control-btngrp .control-key:last-child {
-    margin-right: 0;
 }

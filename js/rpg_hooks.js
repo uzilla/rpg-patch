@@ -70,3 +70,22 @@ document.addEventListener('keydown', function(event) {
 document.addEventListener('keyup', function(event) {
     console.log("Key Up: " + event.key);
 });
+
+
+Hooks = function() {
+    throw new Error("This is a static class!");
+}
+
+Hooks.quickSave = function() {
+    if (!$gameParty.inBattle()) {
+        SceneManager.push(Scene_Save);
+    }
+    return true;
+}
+
+Hooks.quickLoad = function() {
+    if (!$gameParty.inBattle()) {
+        SceneManager.push(Scene_Load);
+    }
+    return true;
+}
