@@ -12,18 +12,18 @@
     var _onload = window["onload"];
     var _bindKeyEvents = function() {
         $(".control-key").on("touchstart", function(event) {
-            event.srcElement.click(); return false;
+            event.srcElement.click();
+            return false;
         });
-    }
+    };
+    var $vConsolse = new VConsole();
 
     window.onload = function() {
-        //_bindKeyEvents();
-        _bindKeyEvents.apply(this);
+        _bindKeyEvents.apply(this, arguments);
         if (typeof(_onload) === "function") {
-            //_onload();
-            _onload.apply(this);
+            _onload.apply(this, arguments);
         }
-    }
+    };
 })();
 
 AudioManager.audioFileExt = function() {
@@ -34,6 +34,8 @@ Input.nameMapper = (function() {
     var nameMapper = {
         "f2": 113, // Show FPSMeter
         "f4": 115, // Switch FullScreen
+        'C': 67,
+        'Z': 90,
     };
     for (var code in Input.keyMapper) {
         nameMapper[Input.keyMapper[code]] = Number(code);
@@ -46,14 +48,14 @@ Input._fireKeyDown = function(keyname) {
         key: keyname,
         keyCode: this.nameMapper[keyname],
     }));
-}
+};
 
 Input._fireKeyUp = function(keyname) {
     document.dispatchEvent(new KeyboardEvent('keyup', {
         key: keyname,
         keyCode: this.nameMapper[keyname],
     }));
-}
+};
 
 Input.fireKey = function(keyname) {
     this._fireKeyDown(keyname);
@@ -61,7 +63,7 @@ Input.fireKey = function(keyname) {
     setTimeout((function() {
         this._fireKeyUp(keyname);
     }).bind(this), 0);
-}
+};
 
 document.addEventListener('keydown', function(event) {
     console.log("Key Down: " + event.key);
@@ -74,18 +76,18 @@ document.addEventListener('keyup', function(event) {
 
 Hooks = function() {
     throw new Error("This is a static class!");
-}
+};
 
 Hooks.quickSave = function() {
     if (!$gameParty.inBattle()) {
         SceneManager.push(Scene_Save);
     }
     return false;
-}
+};
 
 Hooks.quickLoad = function() {
     if (!$gameParty.inBattle()) {
         SceneManager.push(Scene_Load);
     }
     return false;
-}
+};
