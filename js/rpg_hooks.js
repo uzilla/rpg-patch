@@ -1,30 +1,32 @@
 ﻿// Author: urain39
 // FIXED: Mobile Devices Such As Android Cannot Run At Browser
 
+/**** BEGIN OF THE HOOKS ****/
 (function() {
-    if (!WebAudio.canPlayOgg()) {
-        SceneManager.stop();
-        AudioManager.stopAll();
-        // NOTE: Canvas doesn't initiated now.
-        alert("Doesn't support on your browser!");
+/**** BEGIN OF THE HOOKS ****/
+
+if (!WebAudio.canPlayOgg()) {
+    SceneManager.stop();
+    AudioManager.stopAll();
+    // NOTE: Canvas doesn't initiated now.
+    alert("Doesn't support on your browser!");
+}
+
+var _onload = window["onload"];
+var _bindKeyEvents = function() {
+    $(".control-key").on("touchstart", function(event) {
+        event.srcElement.click();
+        return false;
+    });
+};
+var $vConsolse = new VConsole();
+
+window.onload = function() {
+    _bindKeyEvents.apply(this, arguments);
+    if (typeof(_onload) === "function") {
+        _onload.apply(this, arguments);
     }
-
-    var _onload = window["onload"];
-    var _bindKeyEvents = function() {
-        $(".control-key").on("touchstart", function(event) {
-            event.srcElement.click();
-            return false;
-        });
-    };
-    var $vConsolse = new VConsole();
-
-    window.onload = function() {
-        _bindKeyEvents.apply(this, arguments);
-        if (typeof(_onload) === "function") {
-            _onload.apply(this, arguments);
-        }
-    };
-})();
+};
 
 AudioManager.audioFileExt = function() {
     return '.ogg'; // Only checking once.
@@ -91,3 +93,58 @@ Hooks.quickLoad = function() {
     }
     return false;
 };
+
+Hooks.dumpSave = function() {
+    function dumpFile(filename, text) {
+        var elem = document.createElement('a');
+        elem.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        elem.setAttribute('download', filename);
+
+        elem.style.display = 'none';
+        document.body.appendChild(elem);
+
+        elem.click();
+        document.body.removeChild(elem);
+    }
+
+    var i, k,
+        buf = {};
+    for (i = 0; i < localStorage.length; i++) {
+        k = localStorage.key(i);
+        buf[k] = localStorage.getItem(k);
+    }
+
+    dumpFile("rpg-saves.json", JSON.stringify(buf));
+}
+
+Hooks.loadDump = function() {
+    function fetchFile() {
+        return new Waiter(function (resolve) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "rpg-saves.json", true);
+            xhr.responseType = "json";
+            xhr.setRequestHeader("Content-Type", "text/plain");
+            xhr.onload = function() {
+                if (this.status === 200) {
+                    resolve(this.response);
+                }
+            };
+            xhr.send(null);
+        });
+    }
+
+    fetchFile()
+        .then(function(data) {
+            var k,
+                buf = data;
+            // Apply saves.
+            for (k in buf) {
+                localStorage.setItem(k, buf[k]);
+            }
+        })
+        .done();
+}
+
+/**** END OF THE HOOKS ****/
+})();
+/**** END OF THE HOOKS ****/
