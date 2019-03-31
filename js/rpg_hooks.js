@@ -94,7 +94,7 @@ Hooks.quickLoad = function() {
     return false;
 };
 
-Hooks.dumpSave = function() {
+Hooks.dumpSaves = function() {
     function dumpFile(filename, text) {
         var elem = document.createElement('a');
         elem.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
@@ -118,7 +118,7 @@ Hooks.dumpSave = function() {
     return false;
 }
 
-Hooks.loadDump = function() {
+Hooks.loadDumps = function() {
     function fetchFile() {
         return new Waiter(function (resolve) {
             var xhr = new XMLHttpRequest();
