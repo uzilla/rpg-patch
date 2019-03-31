@@ -70,14 +70,9 @@ Hooks.fireKey = function(keyname) {
     var self = this;
     self.fireKeyDown(keyname);
     // Ensure that keydown has been processed
-    // =========================================
-    // On WebKit `setTimeout` at least interval 4ms, Firefox 10ms..
-    // And default key process maybe interval at 10~20ms, so at the
-    // safe side we should manually let keyup be fired after at least
-    // 20ms, we think 35ms is best :)
     setTimeout(function() {
         self.fireKeyUp(keyname);
-    }, 35);
+    }, TouchInput.keyRepeatWait);
 };
 
 document.addEventListener('keydown', function(event) {
