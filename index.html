@@ -32,8 +32,8 @@
         <script type="text/javascript" src="js/libs/vconsole.min.js"></script>
         <script type="text/javascript" src="js/rpg_hooks.js"></script>
         <div id="control-left" class="control-btngrp">
-            <button id="ctrl-key-esc" class="control-key" onclick="Input.fireKey('escape')">ESC</button>
-            <button id="ctrl-key-ok" class="control-key" onclick="Input.fireKey('ok')">OK</button>
+            <button id="ctrl-key-esc" class="control-key" onclick="Hooks.fireKey('escape')">ESC</button>
+            <button id="ctrl-key-ok" class="control-key" onclick="Hooks.fireKey('ok')">OK</button>
         </div>
         <div id="control-right" class="control-btngrp">
             <button id="action-quick-load" class="control-key" onclick="Hooks.quickLoad()">LOAD</button>
@@ -42,8 +42,8 @@
             <button id="action-load-saves" class="control-key" onclick="Hooks.loadDumps()">FETCH</button>
         </div>
         <div id="control-right-top" class="control-btngrp">
-            <button id="ctrl-key-f2" class="control-key" onclick="Input.fireKey('f2')">F2</button>
-            <button id="ctrl-key-f4" class="control-key" onclick="Input.fireKey('f4')">F4</button>
+            <button id="ctrl-key-f2" class="control-key" onclick="Hooks.fireKey('f2')">F2</button>
+            <button id="ctrl-key-f4" class="control-key" onclick="Hooks.fireKey('f4')">F4</button>
         </div>
         <!--RPGMV Patch End!-->
     </body>

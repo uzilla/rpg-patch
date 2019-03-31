@@ -22,9 +22,10 @@ var _bindKeyEvents = function() {
 var $vConsolse = new VConsole();
 
 window.onload = function() {
-    _bindKeyEvents.apply(this, arguments);
+    var self = this;
+    _bindKeyEvents.apply(self, arguments);
     if (typeof(_onload) === "function") {
-        _onload.apply(this, arguments);
+        _onload.apply(self, arguments);
     }
 };
 
@@ -32,7 +33,11 @@ AudioManager.audioFileExt = function() {
     return '.ogg'; // Only checking once.
 };
 
-Input.nameMapper = (function() {
+Hooks = function() {
+    throw new Error("This is a static class!");
+};
+
+Hooks.nameMapper = (function() {
     var nameMapper = {
         "f2": 113, // Show FPSMeter
         "f4": 115, // Switch FullScreen
@@ -45,26 +50,34 @@ Input.nameMapper = (function() {
     return nameMapper;
 })();
 
-Input._fireKeyDown = function(keyname) {
+Hooks.fireKeyDown = function(keyname) {
+    var self = this;
     document.dispatchEvent(new KeyboardEvent('keydown', {
         key: keyname,
-        keyCode: this.nameMapper[keyname],
+        keyCode: self.nameMapper[keyname],
     }));
 };
 
-Input._fireKeyUp = function(keyname) {
+Hooks.fireKeyUp = function(keyname) {
+    var self = this;
     document.dispatchEvent(new KeyboardEvent('keyup', {
         key: keyname,
-        keyCode: this.nameMapper[keyname],
+        keyCode: self.nameMapper[keyname],
     }));
 };
 
-Input.fireKey = function(keyname) {
-    this._fireKeyDown(keyname);
-    // Ensure that keydown has been processed.
-    setTimeout((function() {
-        this._fireKeyUp(keyname);
-    }).bind(this), 0);
+Hooks.fireKey = function(keyname) {
+    var self = this;
+    self.fireKeyDown(keyname);
+    // Ensure that keydown has been processed
+    // =========================================
+    // On WebKit `setTimeout` at least interval 4ms, Firefox 10ms..
+    // And default key process maybe interval at 10~20ms, so at the
+    // safe side we should manually let keyup be fired after at least
+    // 20ms, we think 35ms is best :)
+    setTimeout(function() {
+        self.fireKeyUp(keyname);
+    }, 35);
 };
 
 document.addEventListener('keydown', function(event) {
@@ -74,11 +87,6 @@ document.addEventListener('keydown', function(event) {
 document.addEventListener('keyup', function(event) {
     console.log("Key Up: " + event.key);
 });
-
-
-Hooks = function() {
-    throw new Error("This is a static class!");
-};
 
 Hooks.quickSave = function() {
     if (!$gameParty.inBattle()) {
@@ -126,8 +134,9 @@ Hooks.loadDumps = function() {
             xhr.responseType = "json";
             xhr.setRequestHeader("Content-Type", "text/plain");
             xhr.onload = function() {
-                if (this.status === 200) {
-                    resolve(this.response);
+                var self = this;
+                if (self.status === 200) {
+                    resolve(self.response);
                 }
             };
             xhr.send(null);
