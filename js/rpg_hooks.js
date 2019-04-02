@@ -138,16 +138,34 @@ Hooks.loadDumps = function() {
         });
     }
 
-    fetchFile()
-        .then(function(data) {
-            var k,
-                buf = data;
-            // Apply saves.
-            for (k in buf) {
-                localStorage.setItem(k, buf[k]);
-            }
-        })
-        .done();
+    alert("WARNING: This operation will overwrite your current saves!");
+    var confirmed = confirm("Are you sure you want to overwrite?");
+
+    switch (confirmed) {
+        case true: {
+            fetchFile()
+                .then(function(data) {
+                    var k,
+                        buf = data;
+                    // Apply saves.
+                    for (k in buf) {
+                        localStorage.setItem(k, buf[k]);
+                    }
+                })
+                .then(function(data) {
+                    alert("Overwrited.");
+                })
+                .done();
+            break;
+        }
+        case false: {
+            alert("Canceled.");
+            break;
+        }
+        default: {
+            // Do nothing.
+        }
+    }
 
     return false;
 }
