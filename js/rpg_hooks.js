@@ -12,22 +12,43 @@ if (!WebAudio.canPlayOgg()) {
     alert("Doesn't support on your browser!");
 }
 
-var _onload = window["onload"];
-var _bindKeyEvents = function() {
-    $(".control-key").on("touchstart", function(event) {
-        event.srcElement.click();
-        return false;
+$(window).on("load", function(event) {
+    /*
+     * For Debug.
+     */
+    var $vConsolse = new VConsole();
+    $(document).on('keydown', function(event) {
+        console.log("Key Down: " + event.key);
     });
-};
-var $vConsolse = new VConsole();
+    $(document).on('keyup', function(event) {
+        console.log("Key Up: " + event.key);
+    });
 
-window.onload = function() {
-    var self = this;
-    _bindKeyEvents.apply(self, arguments);
-    if (typeof(_onload) === "function") {
-        _onload.apply(self, arguments);
-    }
-};
+    /*
+     * Functions Binding.
+     */
+    $("#action-quick-load").on("click", function(event) {
+        Hooks.quickLoad(); return false;
+    });
+    $("#action-quick-save").on("click", function(event) {
+        Hooks.quickSave(); return false;
+    });
+    $("#action-read-saves").on("click", function(event) {
+        Hooks.readSaves(); return false;
+    });
+    $("#action-dump-saves").on("click", function(event) {
+        Hooks.dumpSaves(); return false;
+    });
+
+    /*
+     * Fix click on Mobile Devices.
+     */
+    $(".control-key").each(function (idx, elem) {
+        $(elem).on("touchstart", function(event) {
+            elem.click(); return false;
+        });
+    });
+});
 
 AudioManager.audioFileExt = function() {
     return '.ogg'; // Only checking once.
@@ -38,63 +59,93 @@ Hooks = function() {
 };
 
 Hooks.nameMapper = (function() {
-    var nameMapper = {
+    var code,
+        nameMapper = {
         "f2": 113, // Show FPSMeter
         "f4": 115, // Switch FullScreen
         'C': 67,
         'Z': 90,
     };
-    for (var code in Input.keyMapper) {
+    for (code in Input.keyMapper) {
         nameMapper[Input.keyMapper[code]] = Number(code);
     }
     return nameMapper;
 })();
 
-Hooks.fireKeyDown = function(keyname) {
+Hooks.fireKeyDown = function(keyName) {
     var self = this;
     document.dispatchEvent(new KeyboardEvent('keydown', {
-        key: keyname,
-        keyCode: self.nameMapper[keyname],
+        key: keyName,
+        keyCode: self.nameMapper[keyName],
     }));
 };
 
-Hooks.fireKeyUp = function(keyname) {
+Hooks.fireKeyUp = function(keyName) {
     var self = this;
     document.dispatchEvent(new KeyboardEvent('keyup', {
-        key: keyname,
-        keyCode: self.nameMapper[keyname],
+        key: keyName,
+        keyCode: self.nameMapper[keyName],
     }));
 };
 
-Hooks.fireKey = function(keyname) {
+Hooks.fireKey = function(keyName) {
     var self = this;
-    self.fireKeyDown(keyname);
+    self.fireKeyDown(keyName);
     // Ensure that keydown has been processed
     setTimeout(function() {
-        self.fireKeyUp(keyname);
+        self.fireKeyUp(keyName);
     }, TouchInput.keyRepeatWait);
-};
-
-document.addEventListener('keydown', function(event) {
-    console.log("Key Down: " + event.key);
-});
-
-document.addEventListener('keyup', function(event) {
-    console.log("Key Up: " + event.key);
-});
-
-Hooks.quickSave = function() {
-    if (!$gameParty.inBattle()) {
-        SceneManager.push(Scene_Save);
-    }
-    return false;
 };
 
 Hooks.quickLoad = function() {
     if (!$gameParty.inBattle()) {
         SceneManager.push(Scene_Load);
     }
-    return false;
+};
+
+Hooks.quickSave = function() {
+    if (!$gameParty.inBattle()) {
+        SceneManager.push(Scene_Save);
+    }
+};
+
+Hooks.readSaves = function() {
+    function fetchFile() {
+        return new Waiter(function (resolve) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "rpg-saves.json", true);
+            xhr.responseType = "json";
+            xhr.setRequestHeader("Content-Type", "text/plain");
+            xhr.onload = function() {
+                var self = this;
+                if (self.status === 200) {
+                    resolve(self.response);
+                }
+            };
+            xhr.send(null);
+        });
+    }
+
+    alert("WARNING: This operation will overwrite your current saves!");
+    var choice = confirm("Are you sure you want to overwrite?");
+
+    if (choice === true) {
+        fetchFile()
+            .then(function(data) {
+                var k,
+                    buf = data;
+                // Apply saves.
+                for (k in buf) {
+                    localStorage.setItem(k, buf[k]);
+                }
+            })
+            .then(function(data) {
+                alert("Overwrited.");
+            })
+            .done();
+    } else {
+        alert("Canceled.");
+    }
 };
 
 Hooks.dumpSaves = function() {
@@ -117,58 +168,7 @@ Hooks.dumpSaves = function() {
         buf[k] = localStorage.getItem(k);
     }
     dumpFile("rpg-saves.json", JSON.stringify(buf));
-
-    return false;
-}
-
-Hooks.loadDumps = function() {
-    function fetchFile() {
-        return new Waiter(function (resolve) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "rpg-saves.json", true);
-            xhr.responseType = "json";
-            xhr.setRequestHeader("Content-Type", "text/plain");
-            xhr.onload = function() {
-                var self = this;
-                if (self.status === 200) {
-                    resolve(self.response);
-                }
-            };
-            xhr.send(null);
-        });
-    }
-
-    alert("WARNING: This operation will overwrite your current saves!");
-    var confirmed = confirm("Are you sure you want to overwrite?");
-
-    switch (confirmed) {
-        case true: {
-            fetchFile()
-                .then(function(data) {
-                    var k,
-                        buf = data;
-                    // Apply saves.
-                    for (k in buf) {
-                        localStorage.setItem(k, buf[k]);
-                    }
-                })
-                .then(function(data) {
-                    alert("Overwrited.");
-                })
-                .done();
-            break;
-        }
-        case false: {
-            alert("Canceled.");
-            break;
-        }
-        default: {
-            // Do nothing.
-        }
-    }
-
-    return false;
-}
+};
 
 /**** END OF THE HOOKS ****/
 })();
