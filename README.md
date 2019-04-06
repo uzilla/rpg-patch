@@ -1,4 +1,4 @@
-# rpg-patch v4-beta #
+# rpg-patch V4-REL #
 
 RPGMV浏览器兼容补丁
 

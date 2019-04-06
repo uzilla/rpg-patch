@@ -59,15 +59,15 @@ Hooks = function() {
 };
 
 Hooks.nameMapper = (function() {
-    var code,
+    var keyCode,
         nameMapper = {
         "f2": 113, // Show FPSMeter
         "f4": 115, // Switch FullScreen
         'C': 67,
         'Z': 90,
     };
-    for (code in Input.keyMapper) {
-        nameMapper[Input.keyMapper[code]] = Number(code);
+    for (keyCode in Input.keyMapper) {
+        nameMapper[Input.keyMapper[keyCode]] = Number(keyCode);
     }
     return nameMapper;
 })();
