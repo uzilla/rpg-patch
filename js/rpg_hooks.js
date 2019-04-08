@@ -27,6 +27,18 @@ $(window).on("load", function(event) {
     /*
      * Functions Binding.
      */
+    $("#ctrl-key-esc").on("click", function(event) {
+        Hooks.fireKey("escape"); return false;
+    });
+    $("#ctrl-key-ok").on("click", function(event) {
+        Hooks.fireKey("ok"); return false;
+    });
+    $("#ctrl-key-f2").on("click", function(event) {
+        Hooks.fireKey("f2"); return false;
+    });
+    $("#ctrl-key-f4").on("click", function(event) {
+        Hooks.fireKey("f4"); return false;
+    });
     $("#action-quick-load").on("click", function(event) {
         Hooks.quickLoad(); return false;
     });
@@ -48,6 +60,26 @@ $(window).on("load", function(event) {
             elem.click(); return false;
         });
     });
+
+   /*
+    * Support Long Press.
+    */
+    function _$(selector, keyName) {
+        var intervalId;
+        $(selector).on("touchstart", function(event) {
+            intervalId = Hooks.longPress(keyName); return false;
+        });
+        $(selector).on("touchend", function(event) {
+            clearInterval(intervalId); return false;
+        });
+    }
+   /*
+    * Mapings Binding.
+    */
+    _$("#ctrl-key-left", "left");
+    _$("#ctrl-key-right", "right");
+    _$("#ctrl-key-up", "up");
+    _$("#ctrl-key-down", "down");
 });
 
 AudioManager.audioFileExt = function() {
@@ -63,8 +95,6 @@ Hooks.nameMapper = (function() {
         nameMapper = {
         "f2": 113, // Show FPSMeter
         "f4": 115, // Switch FullScreen
-        'C': 67,
-        'Z': 90,
     };
     for (keyCode in Input.keyMapper) {
         nameMapper[Input.keyMapper[keyCode]] = Number(keyCode);
@@ -94,7 +124,17 @@ Hooks.fireKey = function(keyName) {
     // Ensure that keydown has been processed
     setTimeout(function() {
         self.fireKeyUp(keyName);
-    }, TouchInput.keyRepeatWait);
+    }, TouchInput.keyRepeatWait - 1);
+};
+
+/**
+ * @return timer id
+ */
+Hooks.longPress = function(keyName) {
+    var self = this;
+    return setInterval(function() {
+      self.fireKey(keyName);
+    }, TouchInput.keyRepeatInterval);
 };
 
 Hooks.quickLoad = function() {
