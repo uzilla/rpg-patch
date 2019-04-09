@@ -101,25 +101,10 @@ Hooks.nameMapper = (function() {
     return nameMapper;
 })();
 
-Hooks.resolveKeyAlias = function(keyName) {
-  switch (keyName) {
-    case "left":
-      return "ArrowLeft";
-    case "up":
-      return "ArrowUp";
-    case "down":
-      return "ArrowDown";
-    case "Right":
-      return "ArrowRight";
-  }
-
-  return keyName;
-};
-
 Hooks.fireKeyDown = function(keyName) {
     var self = this;
     document.dispatchEvent(new KeyboardEvent('keydown', {
-        key: self.resolveKeyAlias(keyName),
+        key: keyName,
         keyCode: self.nameMapper[keyName],
     }));
 };
@@ -127,7 +112,7 @@ Hooks.fireKeyDown = function(keyName) {
 Hooks.fireKeyUp = function(keyName) {
     var self = this;
     document.dispatchEvent(new KeyboardEvent('keyup', {
-        key: self.resolveKeyAlias(keyName),
+        key: keyName,
         keyCode: self.nameMapper[keyName],
     }));
 };
