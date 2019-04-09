@@ -17,10 +17,10 @@ $(window).on("load", function(event) {
      * For Debug.
      */
     var $vConsolse = new VConsole();
-    $(document).on('keydown', function(event) {
+    $(document).on("keydown", function(event) {
         console.log("Key Down: " + event.key);
     });
-    $(document).on('keyup', function(event) {
+    $(document).on("keyup", function(event) {
         console.log("Key Up: " + event.key);
     });
 
@@ -28,16 +28,16 @@ $(window).on("load", function(event) {
      * Functions Binding.
      */
     $("#ctrl-key-esc").on("click", function(event) {
-        Hooks.fireKey("escape"); return false;
+        Hooks.fireKey("Escape"); return false;
     });
     $("#ctrl-key-ok").on("click", function(event) {
-        Hooks.fireKey("ok"); return false;
+        Hooks.fireKey("Enter"); return false;
     });
     $("#ctrl-key-f2").on("click", function(event) {
-        Hooks.fireKey("f2"); return false;
+        Hooks.fireKey("F2"); return false;
     });
     $("#ctrl-key-f4").on("click", function(event) {
-        Hooks.fireKey("f4"); return false;
+        Hooks.fireKey("F4"); return false;
     });
     $("#action-quick-load").on("click", function(event) {
         Hooks.quickLoad(); return false;
@@ -75,14 +75,14 @@ $(window).on("load", function(event) {
    /*
     * Mapings Binding.
     */
-    _$("#ctrl-key-left", "left");
-    _$("#ctrl-key-right", "right");
-    _$("#ctrl-key-up", "up");
-    _$("#ctrl-key-down", "down");
+    _$("#ctrl-key-left", "ArrowLeft");
+    _$("#ctrl-key-right", "ArrowRight");
+    _$("#ctrl-key-up", "ArrowUp");
+    _$("#ctrl-key-down", "ArrowDown");
 });
 
 AudioManager.audioFileExt = function() {
-    return '.ogg'; // Only checking once.
+    return ".ogg"; // Only checking once.
 };
 
 Hooks = function() {
@@ -92,18 +92,23 @@ Hooks = function() {
 Hooks.nameMapper = (function() {
     var keyCode,
         nameMapper = {
-        "f2": 113, // Show FPSMeter
-        "f4": 115, // Switch FullScreen
+        "F2"        : 113, // Show FPSMeter
+        "F4"        : 115, // Switch FullScreen
+        "PageDown"  : 33,
+        "PageUp"    : 34,
+        "Escape"    : 27,
+        "Enter"     : 13,
+        "ArrowLeft" : 37,
+        "ArrowUp"   : 38,
+        "ArrowRight": 39,
+        "ArrowDown" : 40,
     };
-    for (keyCode in Input.keyMapper) {
-        nameMapper[Input.keyMapper[keyCode]] = Number(keyCode);
-    }
     return nameMapper;
 })();
 
 Hooks.fireKeyDown = function(keyName) {
     var self = this;
-    document.dispatchEvent(new KeyboardEvent('keydown', {
+    document.dispatchEvent(new KeyboardEvent("keydown", {
         key: keyName,
         keyCode: self.nameMapper[keyName],
     }));
@@ -111,7 +116,7 @@ Hooks.fireKeyDown = function(keyName) {
 
 Hooks.fireKeyUp = function(keyName) {
     var self = this;
-    document.dispatchEvent(new KeyboardEvent('keyup', {
+    document.dispatchEvent(new KeyboardEvent("keyup", {
         key: keyName,
         keyCode: self.nameMapper[keyName],
     }));
@@ -179,11 +184,11 @@ Hooks.readSaves = function() {
 
 Hooks.dumpSaves = function() {
     function dumpFile(filename, text) {
-        var elem = document.createElement('a');
-        elem.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-        elem.setAttribute('download', filename);
+        var elem = document.createElement("a");
+        elem.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
+        elem.setAttribute("download", filename);
 
-        elem.style.display = 'none';
+        elem.style.display = "none";
         document.body.appendChild(elem);
 
         elem.click();
