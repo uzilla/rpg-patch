@@ -65,12 +65,11 @@ $(window).on("load", function(event) {
     * Support Long Press.
     */
     function _$(selector, keyName) {
-        var intervalId;
         $(selector).on("touchstart", function(event) {
-            intervalId = Hooks.longPress(keyName); return false;
+            Hooks.fireKeyDown(keyName); return false;
         });
         $(selector).on("touchend", function(event) {
-            clearInterval(intervalId); return false;
+            Hooks.fireKeyUp(keyName); return false;
         });
     }
    /*
@@ -102,10 +101,25 @@ Hooks.nameMapper = (function() {
     return nameMapper;
 })();
 
+Hooks.resolveKeyAlias = function(keyName) {
+  switch (keyName) {
+    case "left":
+      return "ArrowLeft";
+    case "up":
+      return "ArrowUp";
+    case "down":
+      return "ArrowDown";
+    case "Right":
+      return "ArrowRight";
+  }
+
+  return keyName;
+};
+
 Hooks.fireKeyDown = function(keyName) {
     var self = this;
     document.dispatchEvent(new KeyboardEvent('keydown', {
-        key: keyName,
+        key: self.resolveKeyAlias(keyName),
         keyCode: self.nameMapper[keyName],
     }));
 };
@@ -113,7 +127,7 @@ Hooks.fireKeyDown = function(keyName) {
 Hooks.fireKeyUp = function(keyName) {
     var self = this;
     document.dispatchEvent(new KeyboardEvent('keyup', {
-        key: keyName,
+        key: self.resolveKeyAlias(keyName),
         keyCode: self.nameMapper[keyName],
     }));
 };
@@ -125,16 +139,6 @@ Hooks.fireKey = function(keyName) {
     setTimeout(function() {
         self.fireKeyUp(keyName);
     }, TouchInput.keyRepeatWait - 1);
-};
-
-/**
- * @return timer id
- */
-Hooks.longPress = function(keyName) {
-    var self = this;
-    return setInterval(function() {
-      self.fireKey(keyName);
-    }, TouchInput.keyRepeatInterval);
 };
 
 Hooks.quickLoad = function() {
