@@ -89,9 +89,9 @@ Hooks = function() {
     throw new Error("This is a static class!");
 };
 
-Hooks.nameMapper = (function() {
+Hooks.keyNameMapper = (function() {
     var keyCode,
-        nameMapper = {
+        keyNameMapper = {
         "F2"        : 113, // Show FPSMeter
         "F4"        : 115, // Switch FullScreen
         "PageDown"  : 33,
@@ -103,14 +103,14 @@ Hooks.nameMapper = (function() {
         "ArrowRight": 39,
         "ArrowDown" : 40,
     };
-    return nameMapper;
+    return keyNameMapper;
 })();
 
 Hooks.fireKeyDown = function(keyName) {
     var self = this;
     document.dispatchEvent(new KeyboardEvent("keydown", {
         key: keyName,
-        keyCode: self.nameMapper[keyName],
+        keyCode: self.keyNameMapper[keyName],
     }));
 };
 
@@ -118,7 +118,7 @@ Hooks.fireKeyUp = function(keyName) {
     var self = this;
     document.dispatchEvent(new KeyboardEvent("keyup", {
         key: keyName,
-        keyCode: self.nameMapper[keyName],
+        keyCode: self.keyNameMapper[keyName],
     }));
 };
 
