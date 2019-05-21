@@ -17,12 +17,13 @@ $(window).on("load", function(event) {
      * For Debug.
      */
     var $vConsolse = new VConsole();
-    $(document).on("keydown", function(event) {
-        console.log("Key Down: " + event.key);
-    });
-    $(document).on("keyup", function(event) {
-        console.log("Key Up: " + event.key);
-    });
+    $(document)
+        .on("keydown", function(event) {
+            console.log("Key Down: " + event.key);
+        })
+        .on("keyup", function(event) {
+            console.log("Key Up: " + event.key);
+        });
 
     /*
      * Functions Binding.
@@ -65,12 +66,13 @@ $(window).on("load", function(event) {
     * Support Long Press.
     */
     function _$(selector, keyName) {
-        $(selector).on("touchstart", function(event) {
-            Hooks.fireKeyDown(keyName); return false;
-        });
-        $(selector).on("touchend", function(event) {
-            Hooks.fireKeyUp(keyName); return false;
-        });
+        $(selector)
+            .on("touchstart", function(event) {
+                Hooks.fireKeyDown(keyName); return false;
+            })
+            .on("touchend", function(event) {
+                Hooks.fireKeyUp(keyName); return false;
+            });
     }
    /*
     * Mapings Binding.
