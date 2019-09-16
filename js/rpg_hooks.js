@@ -16,7 +16,9 @@ $(window).on("load", function(event) {
     /*
      * For Debug.
      */
+
     var $vConsolse = new VConsole();
+
     $(document)
         .on("keydown", function(event) {
             console.log("Key Down: " + event.key);
@@ -81,6 +83,37 @@ $(window).on("load", function(event) {
     _$("#ctrl-key-right", "ArrowRight");
     _$("#ctrl-key-up", "ArrowUp");
     _$("#ctrl-key-down", "ArrowDown");
+
+
+   /*
+    * Support DoubleTouch2Wheel.
+    */
+
+    // (function () {
+    //     var startY;
+    // 
+    //     $(document)
+    //         .on("touchstart", function(event) {
+    //             var touches = event.targetTouches;
+    // 
+    //             startY = touches[0].pageY; return false;
+    //         })
+    //         .on("touchmove", function(event) {
+    //             var currY = startY,
+    //                 touches = event.changedTouches;
+    // 
+    //             if (touches.length != 2)
+    //                 return;  // Only double touches support DT2W
+    // 
+    //             currY = touches[0].pageY;
+    //             transY = currY - startY;
+    // 
+    //             console.log("DT2W: transY = " + transY);
+    //             document.dispatchEvent(new WheelEvent("wheel", {
+    //                 deltaY: transY
+    //             })); return false;
+    //         });
+    // })();
 });
 
 AudioManager.audioFileExt = function() {
@@ -91,45 +124,40 @@ Hooks = function() {
     throw new Error("This is a static class!");
 };
 
-Hooks.keyNameMapper = (function() {
-    var keyCode,
-        keyNameMapper = {
-        "F2"        : 113, // Show FPSMeter
-        "F4"        : 115, // Switch FullScreen
-        "PageDown"  : 33,
-        "PageUp"    : 34,
-        "Escape"    : 27,
-        "Enter"     : 13,
-        "ArrowLeft" : 37,
-        "ArrowUp"   : 38,
-        "ArrowRight": 39,
-        "ArrowDown" : 40,
-    };
-    return keyNameMapper;
-})();
+Hooks.keyNameMapper = {
+    "ArrowLeft" : 37,
+    "ArrowUp"   : 38,
+    "ArrowRight": 39,
+    "ArrowDown" : 40,
+    "PageDown"  : 33,
+    "PageUp"    : 34,
+    "Escape"    : 27,
+    "Enter"     : 13,
+    "F2"        : 113, // Show FPSMeter
+    "F4"        : 115, // Switch FullScreen
+};
 
 Hooks.fireKeyDown = function(keyName) {
-    var self = this;
     document.dispatchEvent(new KeyboardEvent("keydown", {
         key: keyName,
-        keyCode: self.keyNameMapper[keyName],
+        keyCode: this.keyNameMapper[keyName],
     }));
 };
 
 Hooks.fireKeyUp = function(keyName) {
-    var self = this;
     document.dispatchEvent(new KeyboardEvent("keyup", {
         key: keyName,
-        keyCode: self.keyNameMapper[keyName],
+        keyCode: this.keyNameMapper[keyName],
     }));
 };
 
 Hooks.fireKey = function(keyName) {
-    var self = this;
-    self.fireKeyDown(keyName);
+    this.fireKeyDown(keyName);
+
+    var that = this;
     // Ensure that keydown has been processed
     setTimeout(function() {
-        self.fireKeyUp(keyName);
+        that.fireKeyUp(keyName);
     }, TouchInput.keyRepeatWait - 1);
 };
 
@@ -147,25 +175,24 @@ Hooks.quickSave = function() {
 
 Hooks.readSaves = function() {
     function fetchFile() {
-        return new Waiter(function (resolve) {
+        return new Promise(function (resolve, reject) {
             var xhr = new XMLHttpRequest();
             xhr.open("GET", "rpg-saves.json", true);
             xhr.responseType = "json";
             xhr.setRequestHeader("Content-Type", "text/plain");
             xhr.onload = function() {
-                var self = this;
-                if (self.status === 200) {
-                    resolve(self.response);
+                if (this.status === 200) {
+                    resolve(this.response);
                 }
             };
+
             xhr.send(null);
         });
     }
 
     alert("WARNING: This operation will overwrite your current saves!");
-    var choice = confirm("Are you sure you want to overwrite?");
 
-    if (choice === true) {
+    if (confirm("Are you sure you want to overwrite?")) {
         fetchFile()
             .then(function(data) {
                 var k,
@@ -177,11 +204,12 @@ Hooks.readSaves = function() {
             })
             .then(function(data) {
                 alert("Overwrited.");
-            })
-            .done();
-    } else {
-        alert("Canceled.");
+            });
+
+        return;
     }
+
+    alert("Canceled.");
 };
 
 Hooks.dumpSaves = function() {
@@ -199,10 +227,12 @@ Hooks.dumpSaves = function() {
 
     var i, k,
         buf = {};
+
     for (i = 0; i < localStorage.length; i++) {
         k = localStorage.key(i);
         buf[k] = localStorage.getItem(k);
     }
+
     dumpFile("rpg-saves.json", JSON.stringify(buf));
 };
 
