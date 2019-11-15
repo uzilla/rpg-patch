@@ -83,37 +83,6 @@ $(window).on("load", function(event) {
     _$("#ctrl-key-right", "ArrowRight");
     _$("#ctrl-key-up", "ArrowUp");
     _$("#ctrl-key-down", "ArrowDown");
-
-
-   /*
-    * Support DoubleTouch2Wheel.
-    */
-
-    // (function () {
-    //     var startY;
-    // 
-    //     $(document)
-    //         .on("touchstart", function(event) {
-    //             var touches = event.targetTouches;
-    // 
-    //             startY = touches[0].pageY; return false;
-    //         })
-    //         .on("touchmove", function(event) {
-    //             var currY = startY,
-    //                 touches = event.changedTouches;
-    // 
-    //             if (touches.length != 2)
-    //                 return;  // Only double touches support DT2W
-    // 
-    //             currY = touches[0].pageY;
-    //             transY = currY - startY;
-    // 
-    //             console.log("DT2W: transY = " + transY);
-    //             document.dispatchEvent(new WheelEvent("wheel", {
-    //                 deltaY: transY
-    //             })); return false;
-    //         });
-    // })();
 });
 
 AudioManager.audioFileExt = function() {
@@ -158,7 +127,7 @@ Hooks.fireKey = function(keyName) {
     // Ensure that keydown has been processed
     setTimeout(function() {
         that.fireKeyUp(keyName);
-    }, TouchInput.keyRepeatWait - 1);
+    }, Input.keyRepeatWait + 1);
 };
 
 Hooks.quickLoad = function() {
