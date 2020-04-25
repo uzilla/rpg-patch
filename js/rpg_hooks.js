@@ -202,7 +202,7 @@ Hooks.dumpSaves = function() {
         buf[k] = localStorage.getItem(k);
     }
 
-    dumpFile("rpg-saves.json", JSON.stringify(buf));
+    dumpFile("rpg-saves.json" + $("title").text(), JSON.stringify(buf));
 };
 
 /**** END OF THE HOOKS ****/
