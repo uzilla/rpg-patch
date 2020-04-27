@@ -12,7 +12,7 @@ if (!WebAudio.canPlayOgg()) {
     alert('Doesn\'t support on your browser!');
 }
 
-var $saveFile = 'rpg-saves(' + $('title').text() + ').json';
+var _$getSaveFile = () => 'rpg-saves(' + $('title').text() + ').json';
 
 $(window).on('load', function(event) {
     /*
@@ -148,7 +148,7 @@ Hooks.readSaves = function() {
     function fetchFile() {
         return new Promise(function (resolve, reject) {
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', $saveFile, true);
+            xhr.open('GET', _$getSaveFile(), true);
             xhr.responseType = 'json';
             xhr.setRequestHeader('Content-Type', 'text/plain');
             xhr.onload = function() {
@@ -204,7 +204,7 @@ Hooks.dumpSaves = function() {
         temp[k] = localStorage.getItem(k);
     }
 
-    dumpSaveFile($saveFile, JSON.stringify(temp));
+    dumpSaveFile(_$getSaveFile(), JSON.stringify(temp));
 };
 
 /**** END OF THE HOOKS ****/
